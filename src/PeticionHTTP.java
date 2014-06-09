@@ -165,21 +165,25 @@ class PeticionHTTP extends Thread {
     	Socket cliente = new Socket(InetAddress.getByName("localhost"),servidor_tcp_puerto);
     	DataOutputStream outCliente = new DataOutputStream(cliente.getOutputStream());
     	DataInputStream inCliente = new DataInputStream(cliente.getInputStream());
-    	
+    	boolean stat = true;
     	outCliente.writeUTF("L");
-    	while( inCliente.available() > 0 ){
-    		String inputData = inCliente.readUTF();
-	    	if( !inputData.equals("NOTHING") ){
-				String mensaje[] = inputData.split("\\|");
-				
-				salida.println("<tr>");
-			    salida.println("	<td>"+mensaje[0]+"</td>");
-			    salida.println("	<td>"+mensaje[1]+"</td>");
-			    salida.println("	<td>"+URLDecoder.decode(mensaje[2],"UTF-8")+"</td>");
-			    salida.println("</tr>");
-	    	}else{
-	    		break;
-	    	}
+    	while( stat ){
+    		try{
+	    		String inputData = inCliente.readUTF();
+		    	if( !inputData.equals("NOTHING") ){
+					String mensaje[] = inputData.split("\\|");
+					
+					salida.println("<tr>");
+				    salida.println("	<td>"+mensaje[0]+"</td>");
+				    salida.println("	<td>"+mensaje[1]+"</td>");
+				    salida.println("	<td>"+URLDecoder.decode(mensaje[2],"UTF-8")+"</td>");
+				    salida.println("</tr>");
+		    	}else{
+		    		break;
+		    	}
+		    }catch(Exception e){
+		    	stat = false;
+		    }
     	}
 		inCliente.close();
     	outCliente.close();
