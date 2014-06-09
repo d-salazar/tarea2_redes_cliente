@@ -1,0 +1,10 @@
+JCC=javac
+JFLAGS=-g
+
+Servidor.class: ServidorWeb.java
+	$(JCC) $(JFLAGS) ServidorWeb.java
+
+PeticionHTTP.class:PeticionHTTP.java
+	$(JCC) $(JFLAGS) PeticionHTTP.java
+clean:
+	$(RM) *.class
